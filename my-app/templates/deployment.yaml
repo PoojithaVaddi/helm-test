@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "test-app.fullname" . }}
+  name: {{ include "my-app.fullname" . }}
   labels:
-    {{- include "test-app.labels" . | nindent 4 }}
+    {{- include "my-app.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "test-app.selectorLabels" . | nindent 6 }}
+      {{- include "my-app.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -18,13 +18,21 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "test-app.selectorLabels" . | nindent 8 }}
+        {{- include "my-app.selectorLabels" . | nindent 8 }}
     spec:
+      volumes:
+      - name: config
+        configMap:
+          name: nginx-config
+      volumeMounts:
+      - name: config
+        mountPath: /etc/nginx/nginx.conf
+        subPath: nginx.conf
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "test-app.serviceAccountName" . }}
+      serviceAccountName: {{ include "my-app.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
