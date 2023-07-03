@@ -14,7 +14,7 @@ data:
            dev: {{ .Values.k8s.interface }}
         gtpu:
            dev: net2
-           advertise: {{ .Values.k8s.upf2-advertise }}
+           advertise: {{ .Values.k8s.secondupfadvertise }}
         subnet:
           - addr: 10.46.0.1/16
             dnn: {{ .Values.dnn }}
