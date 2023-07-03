@@ -49,5 +49,5 @@ amf:
 # Primary/Native kubernetes interface
 k8s:
  interface: eth0
- upf1-advertise: 10.253.17.251
- upf2-advertise: 10.253.17.252
+ firstupfadvertise: 10.253.17.251
+ secondupfadvertise: 10.253.17.252
